@@ -23,6 +23,9 @@ export class Project {
     
     @Column({ nullable: true, type: 'datetime' })
     cancelled_at: Date | null;
+
+    @Column({ nullable: true, type: 'datetime' })
+    finished_at: Date | null;
     
     @Column({ nullable: true, type: 'datetime' })
     forecasted_at: Date | null;
@@ -35,6 +38,7 @@ export class Project {
         description: string;
         started_at?: Date | null;
         cancelled_at?: Date | null;
+        finished_at?: Date | null;
         forecasted_at?: Date | null;
     }, id?: string
     ) {
