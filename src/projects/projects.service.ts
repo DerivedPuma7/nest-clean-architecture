@@ -21,11 +21,11 @@ export class ProjectsService {
   }
 
   findAll() {
-    return `This action returns all projects`;
+    return this.projectRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} project`;
+  findOne(id: string) {
+    return this.projectRepo.findOneOrFail({ where: { id } });
   }
 
   update(id: number, updateProjectDto: UpdateProjectDto) {
