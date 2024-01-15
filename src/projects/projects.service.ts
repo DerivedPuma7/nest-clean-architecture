@@ -28,11 +28,27 @@ export class ProjectsService {
     return this.projectRepo.findOneOrFail({ where: { id } });
   }
 
-  update(id: number, updateProjectDto: UpdateProjectDto) {
-    return `This action updates a #${id} project`;
+  async update(id: string, updateProjectDto: UpdateProjectDto) {
+    const project = await this.projectRepo.findOneOrFail({ where: { id } });
+    updateProjectDto.name && (project.name = updateProjectDto.name);
+    updateProjectDto.description && (project.description = updateProjectDto.description);
+    if(updateProjectDto.started_at) {
+      if(project.status === ProjectStatus.Active) {
+        throw new Error("Cannot start activated project");
+      }
+      if(project.status === ProjectStatus.Completed) {
+        throw new Error("Cannot start completed project");
+      }
+      if(project.status === ProjectStatus.Cancelled) {
+        throw new Error("Cannot start cancelled project");
+      }
+    }
+    project.started_at = updateProjectDto.started_at;
+    project.status = ProjectStatus.Active;
+    this.projectRepo.save(project);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return `This action removes a #${id} project`;
   }
 }
